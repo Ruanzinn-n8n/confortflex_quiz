@@ -1,11 +1,118 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Confort Flex | Quiz</title>
+  <meta name="description" content="Quiz interativo da linha Confort Flex." />
+  <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-    
+
+  <!-- Sprite de ícones SVG usados como placeholder visual nos cards de categoria.
+       São ilustrações simples e originais (linhas geométricas), não fotografias. -->
+  <svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+    <symbol id="icon-sandalia" viewBox="0 0 100 100">
+      <rect x="15" y="60" width="70" height="13" rx="6.5" />
+      <line x1="30" y1="60" x2="46" y2="28" />
+      <line x1="70" y1="60" x2="54" y2="28" />
+      <circle cx="50" cy="26" r="5" />
+    </symbol>
+    <symbol id="icon-tenis" viewBox="0 0 100 100">
+      <path d="M12,72 L12,64 Q12,50 28,45 L52,34 Q62,29 72,34 L84,42 Q90,50 89,60 L87,72 Z" />
+      <line x1="34" y1="42" x2="42" y2="52" />
+      <line x1="44" y1="38" x2="52" y2="49" />
+      <line x1="54" y1="35" x2="61" y2="46" />
+      <line x1="12" y1="72" x2="89" y2="72" />
+    </symbol>
+    <symbol id="icon-bota" viewBox="0 0 100 100">
+      <path d="M37,14 L37,52 L21,68 Q15,74 21,78 L82,78 Q87,78 87,73 L87,54 L61,54 L61,14 Z" />
+      <line x1="21" y1="78" x2="87" y2="73" />
+      <line x1="37" y1="30" x2="61" y2="30" />
+      <line x1="37" y1="42" x2="61" y2="42" />
+    </symbol>
+    <symbol id="icon-producao" viewBox="0 0 100 100">
+      <circle cx="50" cy="50" r="18" />
+      <circle cx="50" cy="50" r="6" />
+      <g>
+        <line x1="50" y1="20" x2="50" y2="10" />
+        <line x1="50" y1="80" x2="50" y2="90" />
+        <line x1="20" y1="50" x2="10" y2="50" />
+        <line x1="80" y1="50" x2="90" y2="50" />
+        <line x1="28.8" y1="28.8" x2="21.7" y2="21.7" />
+        <line x1="71.2" y1="71.2" x2="78.3" y2="78.3" />
+        <line x1="28.8" y1="71.2" x2="21.7" y2="78.3" />
+        <line x1="71.2" y1="28.8" x2="78.3" y2="21.7" />
+      </g>
+    </symbol>
+  </svg>
+
+  <div class="app">
+    <main class="stage" id="stage">
+
+      <!-- TELA 1: INÍCIO -->
+      <section class="screen is-active" id="screen-home" data-screen="home" aria-hidden="false">
+        <div class="screen-inner home-inner">
+          <h1 class="brand-title">
+            <span class="brand-title-line">CONFORT</span>
+            <span class="brand-title-line brand-title-accent">FLEX</span>
+          </h1>
+          <button class="btn btn-primary" id="btn-start" type="button">
+            <span>Iniciar</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- TELA 2: SELEÇÃO DE CATEGORIA -->
+      <section class="screen" id="screen-categories" data-screen="categories" aria-hidden="true">
+        <div class="screen-inner categories-inner">
+          <h2 class="screen-title">Selecione o Quiz</h2>
+          <div class="category-grid" id="category-grid" role="list"></div>
+        </div>
+      </section>
+
+      <!-- TELA 3: QUIZ -->
+      <section class="screen" id="screen-quiz" data-screen="quiz" aria-hidden="true">
+        <div class="screen-inner quiz-inner">
+          <header class="quiz-header">
+            <div class="quiz-header-row">
+              <p class="quiz-progress-label" id="quiz-progress-label">Pergunta 1 de 7</p>
+              <p class="quiz-score" id="quiz-score">Pontos: 0</p>
+            </div>
+            <div class="progress-track" role="progressbar" aria-label="Progresso do quiz" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progress-track">
+              <div class="progress-fill" id="progress-fill"></div>
+            </div>
+          </header>
+
+          <h3 class="quiz-question" id="quiz-question" aria-live="polite">Carregando pergunta...</h3>
+
+          <div class="quiz-options" id="quiz-options" role="list"></div>
+        </div>
+      </section>
+
+      <!-- TELA 4: RESULTADO -->
+      <section class="screen" id="screen-result" data-screen="result" aria-hidden="true">
+        <div class="screen-inner result-inner">
+          <p class="result-eyebrow">Quiz Concluído</p>
+          <p class="result-score" id="result-score">0 / 0</p>
+          <p class="result-percentage" id="result-percentage">0% de aproveitamento</p>
+          <p class="result-breakdown" id="result-breakdown">0 acertos &middot; 0 erros</p>
+          <p class="result-message" id="result-message"></p>
+          <div class="result-actions">
+            <button class="btn btn-primary" id="btn-play-again" type="button">
+              <span>Jogar Novamente</span>
+            </button>
+            <button class="btn btn-ghost" id="btn-back-categories" type="button">
+              <span>Voltar às Categorias</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script src="js/questions.js"></script>
+  <script src="js/app.js"></script>
 </body>
 </html>
