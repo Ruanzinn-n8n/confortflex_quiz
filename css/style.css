@@ -1,0 +1,651 @@
+:root {
+  --color-bg: #0a0a0b;
+  --color-surface: #17171a;
+  --color-surface-alt: #1f1f23;
+  --color-border: rgba(255, 255, 255, 0.09);
+  --color-border-strong: rgba(255, 255, 255, 0.28);
+  --color-text: #f5f5f4;
+  --color-text-dim: #a8a8ad;
+  --color-text-faint: #6f6f75;
+
+  --color-success: #5fbf8f;
+  --color-success-bg: rgba(95, 191, 143, 0.12);
+  --color-error: #e07070;
+  --color-error-bg: rgba(224, 112, 112, 0.12);
+
+  --radius-sm: 10px;
+  --radius-md: 18px;
+  --radius-pill: 999px;
+
+  --shadow-lift: 0 24px 48px rgba(0, 0, 0, 0.45);
+  --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.35);
+
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --t-fast: 160ms;
+  --t-medium: 420ms;
+  --t-slow: 620ms;
+
+  --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue",
+    Helvetica, Arial, sans-serif;
+
+  --content-max: 760px;
+}
+
+/* ---------- 2. Reset básico ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-family);
+  background: var(--color-bg);
+  color: var(--color-text);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overscroll-behavior: none;
+}
+
+h1, h2, h3, p {
+  margin: 0;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-text);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* ---------- 3. Layout base / palco da SPA ---------- */
+.app {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  background: radial-gradient(circle at 50% 0%, #141416 0%, var(--color-bg) 60%);
+}
+
+.stage {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.screen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(20px, 5vw, 56px);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(14px);
+  transition: opacity var(--t-medium) var(--ease-standard),
+    transform var(--t-medium) var(--ease-standard),
+    visibility 0s linear var(--t-medium);
+  overflow-y: auto;
+}
+
+.screen.is-active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateY(0);
+  transition: opacity var(--t-medium) var(--ease-standard),
+    transform var(--t-medium) var(--ease-standard),
+    visibility 0s linear 0s;
+}
+
+.screen-inner {
+  width: 100%;
+  max-width: var(--content-max);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: auto;
+}
+
+/* ---------- 4. Tela inicial ---------- */
+.home-inner {
+  gap: clamp(40px, 8vh, 72px);
+  text-align: center;
+}
+
+.brand-title {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.12em;
+}
+
+.brand-title-line {
+  font-size: clamp(2.6rem, 9vw, 5.2rem);
+  opacity: 0;
+  transform: translateY(18px);
+  animation: revealUp var(--t-slow) var(--ease-standard) forwards;
+  animation-delay: 0.1s;
+}
+
+.brand-title-accent {
+  color: var(--color-text-dim);
+  font-weight: 300;
+  animation-delay: 0.28s;
+}
+
+#btn-start {
+  opacity: 0;
+  transform: translateY(18px);
+  animation: revealUp var(--t-slow) var(--ease-standard) forwards;
+  animation-delay: 0.5s;
+}
+
+/* ---------- 5. Botões ---------- */
+.btn {
+  appearance: none;
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
+  padding: 18px 52px;
+  font-size: 0.92rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  transition: transform var(--t-fast) var(--ease-standard),
+    box-shadow var(--t-fast) var(--ease-standard),
+    background var(--t-fast) var(--ease-standard),
+    border-color var(--t-fast) var(--ease-standard),
+    color var(--t-fast) var(--ease-standard);
+  min-height: 52px;
+}
+
+.btn-primary {
+  background: var(--color-text);
+  color: #0a0a0b;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 34px rgba(245, 245, 244, 0.16);
+}
+
+.btn-primary:active {
+  transform: translateY(0) scale(0.97);
+  box-shadow: 0 6px 16px rgba(245, 245, 244, 0.14);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--color-text);
+  border-color: var(--color-border-strong);
+}
+
+.btn-ghost:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: var(--color-text);
+  transform: translateY(-2px);
+}
+
+.btn-ghost:active {
+  transform: translateY(0) scale(0.97);
+}
+
+/* ---------- 6. Tela de categorias ---------- */
+.categories-inner {
+  gap: clamp(28px, 5vh, 48px);
+  width: 100%;
+  max-width: 980px;
+}
+
+.screen-title {
+  font-size: clamp(1.5rem, 4vw, 2.2rem);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: clamp(14px, 2vw, 22px);
+  width: 100%;
+}
+
+.category-card {
+  appearance: none;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  border-radius: var(--radius-md);
+  padding: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  transition: transform var(--t-fast) var(--ease-standard),
+    border-color var(--t-fast) var(--ease-standard),
+    box-shadow var(--t-fast) var(--ease-standard);
+  opacity: 0;
+  transform: translateY(16px);
+  animation: revealUp var(--t-medium) var(--ease-standard) forwards;
+}
+
+.category-card:hover {
+  transform: translateY(-6px);
+  border-color: var(--color-border-strong);
+  box-shadow: var(--shadow-lift);
+}
+
+.category-card:active {
+  transform: translateY(-2px) scale(0.98);
+}
+
+.card-media {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  width: 100%;
+  background: linear-gradient(150deg, var(--color-surface-alt), #0f0f11);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-placeholder-icon {
+  width: 42%;
+  height: 42%;
+  fill: none;
+  stroke: rgba(245, 245, 244, 0.32);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: stroke var(--t-fast) var(--ease-standard);
+}
+
+.category-card:hover .card-placeholder-icon {
+  stroke: rgba(245, 245, 244, 0.5);
+}
+
+.card-media img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.card-label {
+  padding: 16px 10px;
+  font-weight: 600;
+  font-size: clamp(0.85rem, 1.6vw, 1rem);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text);
+}
+
+/* ---------- 7. Tela de quiz ---------- */
+.quiz-inner {
+  gap: 0;
+  width: 100%;
+}
+
+.quiz-back-btn {
+  appearance: none;
+  position: absolute;
+  top: clamp(20px, 5vw, 40px);
+  left: clamp(20px, 5vw, 40px);
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--color-border);
+  border-radius: 50%;
+  background: var(--color-surface);
+  color: var(--color-text-dim);
+  z-index: 5;
+  transition: transform var(--t-fast) var(--ease-standard),
+    border-color var(--t-fast) var(--ease-standard),
+    background var(--t-fast) var(--ease-standard),
+    color var(--t-fast) var(--ease-standard);
+}
+
+.quiz-back-btn svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.quiz-back-btn:hover {
+  border-color: var(--color-border-strong);
+  background: var(--color-surface-alt);
+  color: var(--color-text);
+  transform: translateX(-2px);
+}
+
+.quiz-back-btn:active {
+  transform: translateX(-2px) scale(0.92);
+}
+
+.quiz-header {
+  width: 100%;
+  margin-bottom: clamp(20px, 4vh, 32px);
+}
+
+.quiz-header-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.quiz-progress-label {
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-dim);
+}
+
+.quiz-score {
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--color-text);
+}
+
+.progress-track {
+  width: 100%;
+  height: 4px;
+  border-radius: var(--radius-pill);
+  background: var(--color-surface-alt);
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  width: 0%;
+  background: var(--color-text);
+  border-radius: inherit;
+  transition: width var(--t-medium) var(--ease-standard);
+}
+
+.quiz-question {
+  font-size: clamp(1.15rem, 2.6vw, 1.6rem);
+  font-weight: 600;
+  line-height: 1.45;
+  text-align: left;
+  margin-bottom: clamp(22px, 4vh, 32px);
+}
+
+.quiz-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  width: 100%;
+}
+
+.option-btn {
+  appearance: none;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-align: left;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+  border-radius: var(--radius-sm);
+  padding: 15px 18px;
+  font-size: 0.95rem;
+  line-height: 1.35;
+  min-height: 56px;
+  transition: transform var(--t-fast) var(--ease-standard),
+    border-color var(--t-fast) var(--ease-standard),
+    background var(--t-fast) var(--ease-standard),
+    opacity var(--t-fast) var(--ease-standard);
+}
+
+.option-btn:hover:not(:disabled) {
+  border-color: var(--color-border-strong);
+  background: var(--color-surface-alt);
+  transform: translateY(-2px);
+}
+
+.option-btn:active:not(:disabled) {
+  transform: translateY(0) scale(0.985);
+}
+
+.option-marker {
+  flex: none;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 1px solid var(--color-border-strong);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--color-text-dim);
+  transition: inherit;
+}
+
+.option-btn:disabled {
+  cursor: default;
+}
+
+.option-btn.is-correct {
+  border-color: var(--color-success);
+  background: var(--color-success-bg);
+  animation: pulseCorrect 420ms var(--ease-standard);
+}
+
+.option-btn.is-correct .option-marker {
+  border-color: var(--color-success);
+  color: var(--color-success);
+}
+
+.option-btn.is-wrong {
+  border-color: var(--color-error);
+  background: var(--color-error-bg);
+  animation: shakeWrong 420ms var(--ease-standard);
+}
+
+.option-btn.is-wrong .option-marker {
+  border-color: var(--color-error);
+  color: var(--color-error);
+}
+
+.option-btn.is-muted {
+  opacity: 0.42;
+}
+
+/* ---------- 8. Tela de resultado ---------- */
+.result-inner {
+  gap: 10px;
+  text-align: center;
+}
+
+.result-eyebrow {
+  font-size: 0.85rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-text-dim);
+  opacity: 0;
+  animation: revealUp var(--t-medium) var(--ease-standard) forwards;
+}
+
+.result-score {
+  font-size: clamp(3rem, 11vw, 5.2rem);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  margin-top: 6px;
+  opacity: 0;
+  animation: revealUp var(--t-medium) var(--ease-standard) forwards;
+  animation-delay: 0.08s;
+}
+
+.result-percentage {
+  font-size: clamp(1rem, 2.4vw, 1.2rem);
+  color: var(--color-text-dim);
+  opacity: 0;
+  animation: revealUp var(--t-medium) var(--ease-standard) forwards;
+  animation-delay: 0.16s;
+}
+
+.result-breakdown {
+  font-size: 0.9rem;
+  color: var(--color-text-faint);
+  margin-top: 4px;
+  opacity: 0;
+  animation: revealUp var(--t-medium) var(--ease-standard) forwards;
+  animation-delay: 0.22s;
+}
+
+.result-message {
+  margin-top: 18px;
+  padding: 10px 22px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--color-text);
+  opacity: 0;
+  animation: revealUp var(--t-medium) var(--ease-standard) forwards;
+  animation-delay: 0.3s;
+}
+
+.result-actions {
+  display: flex;
+  gap: 14px;
+  margin-top: 36px;
+  flex-wrap: wrap;
+  justify-content: center;
+  opacity: 0;
+  animation: revealUp var(--t-medium) var(--ease-standard) forwards;
+  animation-delay: 0.4s;
+}
+
+/* ---------- 9. Animações ---------- */
+@keyframes revealUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulseCorrect {
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.015);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes shakeWrong {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-4px);
+  }
+  75% {
+    transform: translateX(4px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* stagger de entrada dos 4 cards de categoria */
+.category-card:nth-child(1) { animation-delay: 0.05s; }
+.category-card:nth-child(2) { animation-delay: 0.12s; }
+.category-card:nth-child(3) { animation-delay: 0.19s; }
+.category-card:nth-child(4) { animation-delay: 0.26s; }
+
+/* ---------- 10. Responsividade ---------- */
+@media (max-width: 900px) {
+  .category-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .quiz-options {
+    grid-template-columns: 1fr;
+  }
+
+  .brand-title {
+    letter-spacing: 0.08em;
+  }
+
+  .result-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .result-actions .btn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 420px) {
+  .category-grid {
+    gap: 10px;
+  }
+
+  .card-label {
+    padding: 10px 6px;
+    font-size: 0.72rem;
+  }
+
+  .option-btn {
+    padding: 13px 14px;
+    font-size: 0.88rem;
+  }
+}
+
+@media (min-width: 1400px) {
+  .content-max-wide {
+    max-width: 900px;
+  }
+}
