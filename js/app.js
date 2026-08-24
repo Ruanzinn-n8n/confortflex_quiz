@@ -1,15 +1,9 @@
 (function () {
   "use strict";
 
-  /* ---------------------------------------------------------------------
-   * Configuração
-   * ------------------------------------------------------------------- */
-  const ANSWER_FEEDBACK_DELAY_MS = 1500; // tempo de exibição do feedback antes de avançar
+  const ANSWER_FEEDBACK_DELAY_MS = 2000; // tempo de exibição do feedback antes de avançar
   const OPTION_LETTERS = ["A", "B", "C", "D"];
 
-  /* ---------------------------------------------------------------------
-   * Referências ao DOM
-   * ------------------------------------------------------------------- */
   const screens = Array.from(document.querySelectorAll(".screen"));
 
   const btnStart = document.getElementById("btn-start");
@@ -30,9 +24,6 @@
   const btnPlayAgain = document.getElementById("btn-play-again");
   const btnBackCategories = document.getElementById("btn-back-categories");
 
-  /* ---------------------------------------------------------------------
-   * Estado da aplicação
-   * ------------------------------------------------------------------- */
   const state = {
     categoryId: null,
     questions: [],
@@ -44,14 +35,6 @@
     advanceTimer: null
   };
 
-  /* ---------------------------------------------------------------------
-   * Utilitários
-   * ------------------------------------------------------------------- */
-
-  /**
-   * Embaralha um array com o algoritmo Fisher-Yates.
-   * Não modifica o array original; retorna uma nova cópia embaralhada.
-   */
   function shuffleArray(list) {
     const copy = list.slice();
     for (let i = copy.length - 1; i > 0; i--) {
@@ -61,15 +44,6 @@
     return copy;
   }
 
-  /**
-   * Prepara o conjunto de perguntas de uma categoria para uma nova partida:
-   *  - Embaralha a ordem das perguntas (exceto quando shuffleQuestions=false,
-   *    caso da categoria Produção, cuja ordem deve permanecer fixa).
-   *  - Embaralha sempre as alternativas de cada pergunta.
-   *  - A resposta correta é mantida associada ao CONTEÚDO da alternativa
-   *    (correctAnswer é uma string, não um índice), então o embaralhamento
-   *    nunca "perde" a resposta certa.
-   */
   function prepareQuestions(categoryId) {
     const category = QUIZ_DATA[categoryId];
     const baseQuestions = category.shuffleQuestions
@@ -87,9 +61,6 @@
     });
   }
 
-  /* ---------------------------------------------------------------------
-   * Navegação entre telas
-   * ------------------------------------------------------------------- */
   function goToScreen(screenName) {
     screens.forEach((screen) => {
       const isTarget = screen.dataset.screen === screenName;
@@ -98,9 +69,6 @@
     });
   }
 
-  /* ---------------------------------------------------------------------
-   * Tela de categorias
-   * ------------------------------------------------------------------- */
   function buildCategoryGrid() {
     categoryGrid.innerHTML = "";
 
@@ -128,8 +96,6 @@
       img.src = category.image;
       img.alt = `Modelo ${category.label} Confort Flex`;
       img.loading = "lazy";
-      // Caso a imagem ainda não exista no projeto, removemos o <img> e o
-      // placeholder ilustrado (ícone + gradiente) permanece visível.
       img.addEventListener("error", () => img.remove());
       media.appendChild(img);
 
@@ -145,10 +111,7 @@
     });
   }
 
-  /* ---------------------------------------------------------------------
-   * Fluxo do quiz
-   * ------------------------------------------------------------------- */
-  function startQuiz(categoryId) {
+   function startQuiz(categoryId) {
     clearTimeout(state.advanceTimer);
 
     state.categoryId = categoryId;
@@ -258,10 +221,7 @@
     }
   }
 
-  /* ---------------------------------------------------------------------
-   * Tela de resultado
-   * ------------------------------------------------------------------- */
-  function getPerformanceMessage(percentage) {
+   function getPerformanceMessage(percentage) {
     if (percentage === 100) return "Domínio completo. Excelente!";
     if (percentage >= 70) return "Muito bom! Você conhece bem a linha.";
     if (percentage >= 40) return "Bom trabalho. Vale revisar alguns detalhes.";
@@ -269,7 +229,6 @@
   }
 
   function showResult() {
-    // Ao concluir a última pergunta, a barra de progresso reflete 100%.
     progressFill.style.width = "100%";
     progressTrack.setAttribute("aria-valuenow", "100");
 
@@ -281,40 +240,25 @@
     resultBreakdownEl.textContent = `${state.correctCount} acertos · ${state.wrongCount} erros`;
     resultMessageEl.textContent = getPerformanceMessage(percentage);
 
-    // Reinicia as animações de entrada da tela de resultado a cada partida.
     restartEntranceAnimations("#screen-result [class*='result-']");
 
     goToScreen("result");
   }
 
-  /**
-   * Força a reexecução das animações CSS de entrada (usadas na tela de
-   * resultado) removendo e reaplicando a propriedade `animation`.
-   */
-  function restartEntranceAnimations(selector) {
+   function restartEntranceAnimations(selector) {
     document.querySelectorAll(selector).forEach((el) => {
       el.style.animation = "none";
-      // Força reflow para permitir reiniciar a animação.
-      // eslint-disable-next-line no-unused-expressions
       el.offsetHeight;
       el.style.animation = "";
     });
   }
 
-  /**
-   * Interrompe o quiz em andamento (se houver) e retorna à tela de
-   * categorias. Usada tanto pela seta de voltar do cabeçalho do quiz
-   * quanto pelo botão "Voltar às categorias" da tela de resultado.
-   */
   function backToCategories() {
     clearTimeout(state.advanceTimer);
     goToScreen("categories");
   }
 
-  /* ---------------------------------------------------------------------
-   * Eventos globais
-   * ------------------------------------------------------------------- */
-  function bindEvents() {
+ function bindEvents() {
     btnStart.addEventListener("click", () => {
       goToScreen("categories");
     });
@@ -328,9 +272,6 @@
     btnBackCategories.addEventListener("click", backToCategories);
   }
 
-  /* ---------------------------------------------------------------------
-   * Inicialização
-   * ------------------------------------------------------------------- */
   function init() {
     buildCategoryGrid();
     bindEvents();

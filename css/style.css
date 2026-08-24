@@ -31,7 +31,6 @@
   --content-max: 760px;
 }
 
-/* ---------- 2. Reset básico ---------- */
 *,
 *::before,
 *::after {
@@ -73,7 +72,6 @@ img {
   border-radius: 4px;
 }
 
-/* ---------- 3. Layout base / palco da SPA ---------- */
 .app {
   position: fixed;
   inset: 0;
@@ -126,7 +124,6 @@ img {
   margin: auto;
 }
 
-/* ---------- 4. Tela inicial ---------- */
 .home-inner {
   gap: clamp(40px, 8vh, 72px);
   text-align: center;
@@ -162,7 +159,6 @@ img {
   animation-delay: 0.5s;
 }
 
-/* ---------- 5. Botões ---------- */
 .btn {
   appearance: none;
   border: 1px solid transparent;
@@ -211,7 +207,6 @@ img {
   transform: translateY(0) scale(0.97);
 }
 
-/* ---------- 6. Tela de categorias ---------- */
 .categories-inner {
   gap: clamp(28px, 5vh, 48px);
   width: 100%;
@@ -484,7 +479,6 @@ img {
   opacity: 0.42;
 }
 
-/* ---------- 8. Tela de resultado ---------- */
 .result-inner {
   gap: 10px;
   text-align: center;
@@ -550,7 +544,6 @@ img {
   animation-delay: 0.4s;
 }
 
-/* ---------- 9. Animações ---------- */
 @keyframes revealUp {
   from {
     opacity: 0;
@@ -596,13 +589,11 @@ img {
   }
 }
 
-/* stagger de entrada dos 4 cards de categoria */
 .category-card:nth-child(1) { animation-delay: 0.05s; }
 .category-card:nth-child(2) { animation-delay: 0.12s; }
 .category-card:nth-child(3) { animation-delay: 0.19s; }
 .category-card:nth-child(4) { animation-delay: 0.26s; }
 
-/* ---------- 10. Responsividade ---------- */
 @media (max-width: 900px) {
   .category-grid {
     grid-template-columns: repeat(2, 1fr);

@@ -1,34 +1,3 @@
-/**
- * questions.js
- * -----------------------------------------------------------------------
- * Banco de perguntas do CONFORT FLEX QUIZ.
- *
- * Este arquivo contém APENAS conteúdo (perguntas, alternativas, respostas
- * corretas e explicações). Nenhuma lógica de aplicação deve ficar aqui.
- *
- * Para alterar perguntas, respostas ou categorias, edite somente este
- * arquivo. A aplicação (js/app.js) lê estes dados dinamicamente.
- *
- * Estrutura de cada categoria:
- * {
- *   id: "chave-unica",
- *   name: "Nome exibido para o usuário",
- *   shuffleQuestions: true|false,  // Produção usa false (ordem fixa)
- *   questions: [
- *     {
- *       id: number,
- *       question: "Texto da pergunta",
- *       options: ["...", "...", "...", "..."],
- *       correctAnswer: "Texto EXATO de uma das opções acima",
- *       explanation: "Texto curto explicando a resposta correta",
- *       category: "chave-da-categoria"
- *     },
- *     ...
- *   ]
- * }
- * -----------------------------------------------------------------------
- */
-
 const QUIZ_DATA = {
   sandalia: {
     id: "sandalia",
